@@ -1,65 +1,23 @@
 <?php
 /**
- * deferMinify
- * Sets up an array of only unique strings
+ * deferMinifyX
  *
- * @category                Snippet
- * @version                 0.1 alpha
- * @date                    17.03.2016
- * @author                  dh@fuseit.de
- 
-Tested for example with (order not important, duplicate calls/values get sorted out) 
- 
-// Defer CSS at onLoad
-[[deferMinifyX?&addCssSrc=`css/dev.css`]]
-[[deferMinifyX?&addCssSrc=`css/dev2.css`]]
-
-// No "dependsOn" = scripts get loaded first, jquery get id "jquery"
-[[deferMinifyX?&addScriptSrc=`js/jquery.min.js`&id=`jquery`]]
-[[deferMinifyX?&addScriptSrc=`js/webfonts.js`]]
-
-// Script "dependsOn" jquery, so load after jquery
-[[deferMinifyX?&addScriptSrc=`js/application.js`&dependsOn=`jquery`]]
-[[deferMinifyX?&addScriptSrc=`js/unslider-min.js`&id=`unslider`&dependsOn=`jquery`]]
- 
-// Script "dependsOn" unslider, so load after unslider is loaded
-[[deferMinifyX?&addScript=`
-    $('#slider').unslider({
-        animation: 'fade',
-        autoplay: true,
-        delay:5000,
-        nav:false,
-        arrows: false
-    });
-    $('#preloader').delay(100).fadeOut('slow', function(){
-        $(this).remove();
-    });
-    $('#slider ul').fadeIn('slow');
-`&dependsOn=`unslider`]]
-
-// "dependsOn" = script gets called after script['min'] is loaded successfully
-[[deferMinifyX?&addScriptSrc=`js/dev.js`&dependsOn=`min`]]
-[[deferMinifyX?&addScript=`alert('addScript dependsOn min');`&dependsOn=`min`&unique=`1`]]
-[[deferMinifyX?&addScript=`alert('addScript dependsOn min2');`&dependsOn=`min`&unique=`1`]]
-
-// Final call to inject deferScript-magic
-[[!deferMinifyX?
-    &get=`1`
-    &minifyDefer=`1`
-    &minifyCss=`1`
-    &minifyCssFile=`css/min.css`
-    &minifyJs=`1`
-    &minifyJsFile=`js/min.js`
-    &cacheFile=`js/cache.json`
-    &cache=`1`
-    &minify=`1`
-    &debug=`0`
-]]
-
+ * Flexible all-in-one solution for SEO-tasks like defer JS-, CSS- and IMG-files
+ *
+ * @category    plugin
+ * @version     0.1
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
+ * @internal    @properties
+ * @internal    @modx_category Manager and Admin
+ * @internal    @legacy_names deferMinifyX
+ * @internal    @installset base
+ *
+ * @author Deesen / updated: 2016-03-19
+ *
+ * Latest Updates / Issues on Github : https://github.com/Deesen/deferMinifyX-for-modx-revo
  */
-
-$deferMinifyX_base_path = $modx->getOption('deferMinifyX.core_path',$scriptProperties,$modx->getOption('core_path').'components/deferMinifyX/');
-include_once($deferMinifyX_base_path.'class/class.deferMinifyX.php');
+$core_path = $modx->getOption('deferMinifyX.core_path',$scriptProperties,$modx->getOption('core_path').'components/deferMinifyX/');
+include_once($core_path.'class/class.deferMinifyX.php');
 
 // $deferMinifyX_base_url = $modx->getOption('site_url', $scriptProperties, $modx->getOption('site_url').'components/deferMinifyX/');
 
@@ -71,24 +29,31 @@ $unique     = isset($unique)    ? $unique       : true; // must be called uncach
 // Options to pass
 $optionsArr = array(
     // Parameters for get()
-    'minify'        =>isset($minify)        ? $minify           : true,     // Minify defer script before injecting
+    'deferImages'   =>isset($deferImages)   ? $deferImages      : false,    // Add deferImages-script (src="blank.jpg" data-src=""
+    'minify'        =>isset($minify)        ? $minify           : true,     // Enable/disable minify globally
     'minifyDefer'   =>isset($minifyDefer)   ? $minifyDefer      : true,     // Minify defer script before injecting
     'minifyCss'     =>isset($minifyCss)     ? $minifyCss        : true,     // Enable minify CSS-files into min.js
     'minifyCssFile' =>isset($minifyCssFile) ? $minifyCssFile    : 'min.css',// FilePath of min.css
     'minifyJs'      =>isset($minifyJs)      ? $minifyJs         : true,     // Enable minify JS-files into min.js
     'minifyJsFile'  =>isset($minifyJsFile)  ? $minifyJsFile     : 'min.js', // FilePath of min.js
     'cache'         =>isset($cache)         ? $cache            : true,     // Enable/disable caching of minified files (for debug)
-    'cacheFile'     =>isset($cacheFile)     ? $cacheFile        : 'cache.json', // FilePath for caching latest filetimes
+    'cacheFile'     =>isset($cacheFile)     ? $cacheFile        : 'deferMinifyX.json', // FilePath for caching latest filetimes
     'hashParam'     =>isset($hashParam)     ? $hashParam        : '',       // Hash xxx xxx.css?h=xosbsof
-    'debug'         =>isset($debug)         ? $debug            : false,    // Add debug-infos as HTML-comments, activate console, parse JSON pretty printed
-    
+    'debug'         =>isset($debug)         ? $debug            : false,    // Add debug-infos
+    'debugTpl'      =>isset($debug)         ? $debug            : 'default',// @todo: 'default' shows infos as HTML-comments but can be styled 
+
     // Internal parameters
-    'core_path'     =>$deferMinifyX_base_path,
-    'base_path'     =>$modx->getOption('deferMinifyX.base_path',$scriptProperties,MODX_BASE_PATH),
-    
+    'core_path'     =>$core_path,
+    'base_path'     =>$modx->getOption('deferMinifyX.base_path',$scriptProperties,MODX_BASE_PATH), 
+    'cache_path'    =>isset($cachePath)     ? $cachePath        : MODX_BASE_PATH,  // Path to store cacheFile
+
     // @todo: enable saving/calling min.css/min.js from different domain
-    'assets_path'   =>$modx->getOption('deferMinifyX.assets_path',$scriptProperties,MODX_BASE_PATH),
-    'assets_url'    =>$modx->getOption('deferMinifyX.assets_url',$scriptProperties,MODX_BASE_PATH),
+    // $modx->getOption('deferMinifyX.assets_path',$scriptProperties,MODX_BASE_PATH)
+    'assets_path'   =>isset($assetsPath)    ? $assetsPath       : false,    // Save minified files into different directory
+    'assets_url'    =>isset($debug)         ? $debug            : '',       // Use absolute URL for loading minified files from different domain 
+
+    // Determine if session is allowed for debugging-infos
+    'sessionAuth'   =>$modx->user->hasSessionContext('mgr')
 );
 
 deferMinifyX::setOptions($optionsArr);
@@ -106,11 +71,13 @@ if (isset($addCssSrc) && !empty(isset($addCssSrc))) {
 }
 
 if (isset($get)) {
-    $output = deferMinifyX::get($get);
-    if (isset($setPlaceholder) && !empty(isset($setPlaceholder)) && $output != '') {
-        $modx->setPlaceholder($setPlaceholder, $output);
-        return;
+    $outputArr = deferMinifyX::get($get);
+
+    if (isset($setPlaceholder) && !empty(isset($setPlaceholder)) && $outputArr['output'] != '') {
+        $modx->setPlaceholder($setPlaceholder, $outputArr['output'].$outputArr['debug']);
     } else {
-        return $output;
+        return $outputArr['output'].$outputArr['debug'];
     }
 }
+
+return '';
