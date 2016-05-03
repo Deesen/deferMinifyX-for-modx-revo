@@ -1,109 +1,101 @@
-## deferMinifyX 0.1
+## deferMinifyX 0.2
 
-**Testers welcome**
+Plugin + Snippet related to SEO-tasks like **defer Javascript-, Css- and Img-files**. Solution for easy/default CSS/JS-setups, as well as more complex ones allowing to chain multiple onLoad-handlers for \<script\> using the snippet.
 
-I want to provide an easy solution for most nowadays SEO-tasks related to **defer Javascript-, Css- and Img-files**. When finished this snippet aims to be an all-in-one solution for easy/default setups, as well as more complex ones allowing to chain multiple onLoad-handlers.
+You can check your website on https://developers.google.com/speed/pagespeed/insights/
 
-#### Snippet parameters / defaults for &get=\`\`
-    [[deferMinifyX?
-        &minifyDefer=`1`
-        &minifyCss=`1`
-        &minifyCssFile=`css/min.css`
-        &minifyJs=`1`
-        &minifyJsFile=`js/min.js`
-        &deferImages=`0` // img "data-src"->"src" - https://varvy.com/pagespeed/defer-images.html
-        &cacheFile=`cache.json`
-        &cachePath=`/your/absolute/server_path/to/cache.json` // Default assets/cache/
-        &cache=`1`
-        &minify=`1`
-        &debug=`0`
-    ]]
+### Default use
 
-#### Snippet Commandos
-    [[deferMinifyX?
-        &get=`default`
-        &addCssSrc=`your_file.css,another_file.css`
-        &addJsSrc=`your_file.js,another_file.css`
-        &addScript=`alert('fire!');`
-        &id=`unique id of script`
-        &dependsOn=`id of another script`
-    ]]
+To set a standard set of CSS- and JS-files, get them minified into min.css/min.js and append nessecary tags to \<head\> and \</body\>, follow these steps:
 
-## Examples
-##### Default example
+- Install plugin manually (no transport-package prepared yet)
+- Add required default set of CSS- and JS-files comma-separated in plugin-configuration
+- Set desired parameters, and especially "defer" to true to enable defer-mechanismn
+- Save plugin-configuration, finish!
 
-- Add all nessecary CSS-, JS-files comma-separated in a single snippet-call and add it to your &lt;body&gt;, finish!
+When reloading your frontpage the CSS- and JS-files should be added to your frontpage as configured. By default the defer-option is disabled and will render normal link- and script-tags. Script-Tags will be added to \</body\> ordered by dependsOn/id relations.
 
+### Above-the-fold
 
-        [[deferMinifyX? 
-            &addCssSrc=`css/bootstrap.css,css/styles.css,css/responsive.css`
-            &addJsSrc=`js/jquery.min.js,js/slider.js`
-            &get=`default`
-        ]]
+If you want to inject critical parts of CSS directly into the source-code, please refer to the "Snippet Commandos" below.
 
-##### More complex chaining example
+### Plugin-configuration
 
-  - On page loaded, call the defer function, which loads all scripts without dependencies (no &dependsOn=\`id\` parameter set) first, in this case "script_src_jquery". For this example we add only jQuery but of course you can add multiple scripts "without dependencies"
+Don´t forget to clear Modx-cache to see changes.
+
+| Parameter           | Description | Values (*install default*) |
+|----------------------|-------------|--------------------|
+|activeIds             | Enable plugin only for these ressource-ids (comma-separated)                              | |
+|blankImage            | Filepath to blank-image                                                                   | *img/blank.jpg* |
+|cache                 | Caching of minified files (can be disabled for debug)                                     | *enabled*, disabled | 
+|cachePath             | Path where to store cache-related files (empty defaults to assets/cache/deferMinifyX)     | |
+|context               | Comma-separated list of contexts where to apply plugin to (you can duplicate plugin for different context-setups) | *web* | 
+|debug                 | Shows extended debug-infos (in console.log() and HTML-comments, **disable** on live-sites)| enabled, *disabled* | 
+|defaultCssFiles       | Comma-separated list, optional: add defer/async: css/style.css\|\|defer\|\|async         | *css/style.css,css/responsive.css* |
+|defaultInlineJsChunk  | Default inline-code, will be added to min.js                                              | | 
+|defaultJsFiles        | Comma-separated list, optional: add defer/async: js/application.js\|\|defer\|\|async      | *js/jquery.min.js,js/application.js* |
+|**defer**             | When disabled normal link- and script-tags with optional defer/async-attributes will be rendered) | enabled, *disabled* | 
+|deferImages           | When enabled, it replaces all img src by src="blank.jpg" data-src "real-image.jpg")       | enabled, *disabled* | 
+|hashParam             | String to add as cache-param min.js?suffix (enables min.js?*ver=*xxx)                     | |
+|inactiveIds           | Disable plugin for these ressource-ids (comma-separated)                                  | |
+|minify                | Enable/disable minify globally                                                            | *enabled*, disabled |
+|minifyCss             | Minify default CSS-files into min.css	                                                   | *enabled*, disabled |
+|minifyCssFile         | FilePath to store, example css/min.css                                                    | *min.css* |
+|minifyCssLib          | Which library to use                                                                      | *minifier*          | 
+|minifyDefer           | Inject minified defer script (enabled provides no console.log()-debuginfos)               | *enabled*, disabled |
+|minifyDefer           | Inject minified defer script (enabled provides no console.log()-debuginfos)               | *enabled*, disabled |
+|minifyJs              | Minify default JS-files and inline-code into min.js                                       | *enabled*, disabled | 
+|minifyJsFile          | FilePath to store minified JS-files, example css/min.js                                   | *min.js* | 
+|minifyJsLib           | Which library to use                                                                      | *minifier*, JShrink |  
+|minifyHtml            | Minify HTML-output at runtime                                                             | *disabled*, minifier, regex |
+|noScriptCss           | Add CSS-links as fallback                                                                 | *enabled*, disabled |
+
+### More complex chaining example
+
+  - On page loaded, the defer function is called, adding all scripts without dependencies first (= no &dependsOn=\`id\` parameter set). The default set of JS-files (min.js) will be added with ID "min".
   
-        [[deferMinifyX? &addScriptSrc=`js/jquery.min.js` &id=`script_src_jquery`]]
+  - If jQuery is a default file (within min.js), and a component depends on jQuery, you can use ID "min" with &dependsOn=\`min\`
+  
+        [[!deferMinifyX? &add=`js` &file=`js/slider_xy.min.js` &id=`slider` &dependsOn=`min`]]
+        [[!deferMinifyX? &add=`script` &val=`$('.slider').slider();` &dependsOn=`slider` &id=`slider_call`]]
+
+  - you can chain multiple ids and dependsOn per subpage like required. It should be possible to chain all kind of combinations like (otherwise please report an issue ;-) ):
+  
+        [[!deferMinifyX? &add=`js` &file=`js/slider_tools.min.js` &id=`slider_tools` &dependsOn=`slider_call`]]
+        [[!deferMinifyX? &add=`script` &val=`$('.slider').sliderTool('xy');` &dependsOn=`slider_tools`]]
+        ...
+
+### Snippet Commandos
+#### &add
+
+    [[!deferMinifyX? &add=`css`    &file=`js/your_file.css`]]
+    [[!deferMinifyX? &add=`js`     &file=`js/your_file.js` &id=`your__optional_id`]]
+    [[!deferMinifyX? &add=`js`     &file=`js/your_file.js` &dependsOn=`your__optional_id`]]
+    [[!deferMinifyX? &add=`script` &val=`your code`        &dependsOn=`your__optional_id`]]
+
+Important: Must be called uncached!
+
+#### &get
+
+You can also directly inject base64-encoded images or files, minified css/js-files, or minified strings (use cached snippet-calls!).
+
+    <img    src="[[deferMinifyX? &get=`img64`  &file=`img/your_file.xxx` ]]" alt="" />
+    <style>      [[deferMinifyX? &get=`css`    &file=`css/your_file.css` ]]        </style>
+    <script src="[[deferMinifyX? &get=`js`     &file=`js/your_file.js` ]]">        </script>
     
-  - if "script_src_jquery" loaded then load "script_src_slider" (which depends on "script_src_jquery")
-  
-        [[deferMinifyX? &addScriptSrc=`js/slider.min.js` &dependsOn=`script_src_jquery` &id=`script_src_slider`]]
-        
-  - if "script_src_slider" loaded then call "script_remove_preloader" + call "script_startslider"
-  
-        [[deferMinifyX? &addScript=`$('#preloader').fadeOut();` &dependsOn=`script_src_slider` &id=`script_remove_preloader`]]
-        [[deferMinifyX? &addScript=`$('.slider').slider('init');` &dependsOn=`script_src_slider` &id=`script_startslider`]]
+    <style>      [[deferMinifyX? &get=`minify` &val=`your rules` ]]                </style>
+    <script>     [[deferMinifyX? &get=`minify` &val=`your code` ]]                 </script>
     
-  - if "script_remove_preloader" called then load "script_src_x"
-  
-        [[deferMinifyX? &addScriptSrc=`js/script_x.js` &dependsOn=`script_remove_preloader`]]
-        
-  - if "script_startslider" called then call "script_sort_bullets"
-  
-        [[deferMinifyX? &addScript=`$('.slider').slider('sort');` &dependsOn=`script_startslider`]]
-        
-  - if "script_src_x" loaded then ..
-  
-#### Important: Chaining to "min"
+                 [[deferMinifyX? &get=`base64` &val=`your string to encode` ]]
 
-By default the scriptSrc-element for min.js has ID "min", so you can depend on "min" and hook onload-events after "min" is loaded. If you don´t use a standard-set of minified (probably *cached**) files and you want to dynamically add scripts only on subpages (like "slider.js" only on start-page), you have to hook "slider.js" on ID "min". Using 
+So in a "above-the-fold" scenario you can split critical parts of CSS into a separate file, and put this line into `<head>`
 
-    [[deferMinifyX? &addScriptSrc=`js/jquery.min.js`]]
+    <style>[[deferMinifyX? &get=`css`&file=`css/critical.css` ]]</style>
 
-without &dependsOn="min" will lead to rebuild cache of min-files on each sub-page that changes the default-setup, resulting in constantly changing min.js.
+#### &option
 
-  - on page loaded, call defer function and load min.js (which has no dependencies) with ID "min"
-  - if "min" loaded then load "script_src_dev"
-  
-        [[deferMinifyX? &addScriptSrc=`js/dev.js` &dependsOn=`min` ]]
-    
-  - if "script_src_dev" loaded then ..
-  
-#### Debug-Mode
+For development most parameters of plugin-configuration can be modified dynamically via
 
-  - &debug=\`1\` provides detailed Debug-infos when logged into manager as HTML-comments + console.log(). Each important step will be logged into console for more insight.
-  - &cache=\`0\` forces generating of minified files (for development)
-  - &minify=\`0\` globally disables minifying of files (for development)
-  - &debugTpl=`chunkname/@CODE` enables styling of debugMessages
-
-**Beware of Modx-Cache when in production/logged into manager!** You probably don´t want to make debug-infos public on your live-site by setting &debug=\`1\` .
-
-------------------------------------------------------------------
-
-### Actual version-infos 0.1
-- tested with Modx Revolution 2.4.3
-- **not tested in production** 
-
-### Todo:
-- finish deferMinifyX-cache: 
-    - check md5-cache with changing orders of addScript
-    - check caching on different pages with different addScript-calls
-    - check interaction of deferMinifyX-cache / Modx-cache 
-- inline-todos
-- dependsOn "min": add dynamic minify+cache of each file (and call?)
-- add &get="injectcss" directly to source (with dynamic cache of minified files)
-- add &get="injectjs" directly to source (with dynamic cache of minified files)
-- check common browsers for compatibility
-- add &debugTpl=`` to change display of debug-messages (display in modals etc)
+        [[!deferMinifyX? &option=`defer` &val=`0`]]
+        [[!deferMinifyX? &option=`deferImages` &val=`1`]]
+        ...

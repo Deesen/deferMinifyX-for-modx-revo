@@ -1,0 +1,397 @@
+[
+  {
+    "name": "activeIds",
+    "desc": "Enable plugin only for these ressource-ids (comma-separated)",
+    "xtype": "textfield",
+    "options": [],
+    "value": "",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Enable plugin only for these ressource-ids (comma-separated)",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "blankImage",
+    "desc": "FilePath to blank.jpg",
+    "xtype": "textfield",
+    "options": [],
+    "value": "img/blank.jpg",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "FilePath to blank.jpg",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "cache",
+    "desc": "Caching of minified files (disable for debug)",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": true,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Caching of minified files (disable for debug)",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "cachePath",
+    "desc": "Path to cache-file (empty defaults to components/cache/deferMinifyX)",
+    "xtype": "textfield",
+    "options": [],
+    "value": "",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Path to cache-file (empty defaults to components/cache/deferMinifyX)",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "cacheReset",
+    "desc": "Cache Reset-Type - What type of reset when cleaning Modx-cache?",
+    "xtype": "list",
+    "options": [
+      {
+        "text": "Nothing",
+        "value": "nothing",
+        "name": "Nothing"
+      },
+      {
+        "text": "Index",
+        "value": "index",
+        "name": "Index"
+      },
+      {
+        "text": "All",
+        "value": "all",
+        "name": "All"
+      }
+    ],
+    "value": "index",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Cache Reset-Type - What type of reset when cleaning Modx-cache?",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "context",
+    "desc": "Comma-separated list of contexts where to apply plugin to",
+    "xtype": "textfield",
+    "options": [],
+    "value": "web",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Comma-separated list of contexts where to apply plugin to",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "debug",
+    "desc": "Extended debug-infos (in console.log() and HTML-comments)",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": false,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Extended debug-infos (in console.log() and HTML-comments)",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "debugTpl",
+    "desc": "Optional template with [+ids+],[+js+],[+css+],[+options+],[+messages+]",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": false,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Optional template with [+ids+],[+js+],[+css+],[+options+],[+messages+]",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "defaultCssFiles",
+    "desc": "Comma-separated, optional defer/async:css/style.css||defer||async",
+    "xtype": "textfield",
+    "options": [],
+    "value": "css/styles.css,css/responsive.css",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Comma-separated, optional defer/async:css/style.css||defer||async",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "defaultInlineJsChunk",
+    "desc": "Chunkname with default inline js-code",
+    "xtype": "textfield",
+    "options": [],
+    "value": "",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Chunkname with default inline js-code",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "defaultJsFiles",
+    "desc": "Comma-separated, optional defer/async: js/application.js||defer||async",
+    "xtype": "textfield",
+    "options": [],
+    "value": "js/jquery.min.js,js/application.js",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Comma-separated, optional defer/async: js/application.js||defer||async",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "defer",
+    "desc": "when disabled renders normal link- and script-tags with optional defer/async-attributes",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": false,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "when disabled renders normal link- and script-tags with optional defer/async-attributes",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "deferImages",
+    "desc": "Defer Images (src \"blank.jpg\", data-src \"real-image.jpg\")",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": false,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Defer Images (src \"blank.jpg\", data-src \"real-image.jpg\")",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "inactiveIds",
+    "desc": "Disable plugin for these ressource-ids (comma-separated)",
+    "xtype": "textfield",
+    "options": [],
+    "value": "",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Disable plugin for these ressource-ids (comma-separated)",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "hashParam",
+    "desc": "Parameter-Suffix: min.js?suffix",
+    "xtype": "textfield",
+    "options": [],
+    "value": "",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Parameter-Suffix: min.js?suffix",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "minify",
+    "desc": "Enable/disable minify globally",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": true,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Enable/disable minify globally",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "minifyCss",
+    "desc": "Minify default CSS-files into min.css",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": true,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Minify default CSS-files into min.css",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "minifyCssFile",
+    "desc": "FilePath of min.css",
+    "xtype": "textfield",
+    "options": [],
+    "value": "min.css",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "FilePath of min.css",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "minifyCssLib",
+    "desc": "Lib to minify Css",
+    "xtype": "list",
+    "options": [
+      {
+        "text": "Minifier",
+        "value": "minifier",
+        "name": "Minifier"
+      },
+      {
+        "text": "Regex",
+        "value": "regex",
+        "name": "Regex"
+      }
+    ],
+    "value": "minifier",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Lib to minify Css",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "minifyDefer",
+    "desc": "Minify defer script before injecting",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": true,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Minify defer script before injecting",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "minifyHtml",
+    "desc": "Minify HTML-output at runtime",
+    "xtype": "list",
+    "options": [
+      {
+        "text": "disabled",
+        "value": "disabled",
+        "name": "disabled"
+      },
+      {
+        "text": "Minifier",
+        "value": "minifier",
+        "name": "Minifier"
+      },
+      {
+        "text": "Regex",
+        "value": "regex",
+        "name": "Regex"
+      }
+    ],
+    "value": "disabled",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Minify HTML-output at runtime",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "minifyJs",
+    "desc": "Minify default JS-files and inline-code into min.js",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": true,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Minify default JS-files and inline-code into min.js",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "minifyJsFile",
+    "desc": "FilePath of min.js",
+    "xtype": "textfield",
+    "options": [],
+    "value": "min.js",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "FilePath of min.js",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "minifyJsLib",
+    "desc": "Lib to minify Javascript",
+    "xtype": "list",
+    "options": [
+      {
+        "text": "JShrink",
+        "value": "jshrink",
+        "name": "JShrink"
+      },
+      {
+        "text": "Minifier",
+        "value": "minifier",
+        "name": "Minifier"
+      },
+      {
+        "text": "Regex",
+        "value": "regex",
+        "name": "Regex"
+      }
+    ],
+    "value": "minifier",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Lib to minify Javascript",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  },
+  {
+    "name": "noScriptCss",
+    "desc": "Add CSS-links as fallback",
+    "xtype": "list",
+    "options": [
+      {
+        "text": "Enabled",
+        "value": "enabled",
+        "name": "Enabled"
+      },
+      {
+        "text": "Disabled",
+        "value": "disabled",
+        "name": "Disabled"
+      }
+    ],
+    "value": "enabled",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Add CSS-links as fallback",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+  }
+]
