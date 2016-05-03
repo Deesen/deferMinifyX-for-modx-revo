@@ -24,7 +24,7 @@ if(isset($get)) {
             return deferMinifyX::getFileBase64($file);
         case 'css':
         case 'js':
-            return deferMinifyX::getMinifiedAndCachedFile($file);  
+            return deferMinifyX::getMinifiedAndCachedFile($file, $get);  
         case 'minify':
             return deferMinifyX::minify($val);  // use [!cached!]
         
