@@ -1,6 +1,9 @@
 <?php
 if (!defined('MODX_BASE_PATH')) { die('What are you doing? Get out of here!'); }
 
+$core_path = $modx->getOption('deferMinifyX.core_path', $scriptProperties, $modx->getOption('core_path') . 'components/deferMinifyX/');
+require_once($core_path . 'class/class.deferMinifyX.php');
+
 // Commands
 $id         = isset($id)        ? $id           : NULL;  // to enable "script dependsOn id"
 $dependsOn  = isset($dependsOn) ? $dependsOn    : NULL;  // enables "dependsOn" on "id"
